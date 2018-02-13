@@ -64,7 +64,7 @@ class BtcCrawler {
       } else {
         status.bulkSuccessTickCount += ticks.length;
         status.bulkLastTickTime = moment(ticks[ticks.length - 1].timestamp).format('YYYY/MM/DD HH:mm:ss.SSS');
-        logger.debug('write ticks', ticks.length);
+        logger.info('write ticks', ticks.length);
       }
     });
   }
@@ -77,6 +77,7 @@ class BtcCrawler {
   _initialize() {
     const ws = new WebSocket(`wss://${config.api.host}/ws`);
     ws.on('open', () => {
+      logger.info('websocket connected');
       ws.send(JSON.stringify({
         sub: 'market.btcusdt.kline.1min',
         id: 'btcusdt'
@@ -103,7 +104,7 @@ class BtcCrawler {
       }
     });
     ws.on('close', () => {
-      logger.info('ws close');
+      logger.info('websocket closed');
     });
     ws.on('error', err => {
       this._onSysErr(err);
