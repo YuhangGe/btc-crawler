@@ -19,11 +19,14 @@ const status = {
   sysLastErrorTime: null,
   sysLastErrorMessage: null
 };
+
 class BtcCrawler {
   constructor() {
     this._bootTime = Date.now() / 1000;
     this._tickQueue = [];
     this._bulkBusy = true;
+    this._destried = false;
+    this._ws = null;
     this._bulkTM = setInterval(this._onBulkInt.bind(this), config.elastic.bulkInterval);
     this._checkES();
   }
@@ -43,6 +46,10 @@ class BtcCrawler {
     });
   }
   _onBulkInt() {
+    if (this._destried) {
+      clearInterval(this._bulkTM);
+      return;
+    }
     if (this._bulkBusy || this._tickQueue.length === 0) return;
     const ticks = this._tickQueue;
     this._tickQueue = [];
@@ -120,10 +127,29 @@ class BtcCrawler {
     });
     ws.on('close', () => {
       logger.info('websocket closed');
+      this.destroy();
     });
     ws.on('error', err => {
       this._onSysErr(err);
+      this.destroy();
     });
+    this._ws = ws;
+  }
+  destroy() {
+    if (this._destried) return;
+    this._destried = true;    
+    if (this._ws) {
+      this._ws.removeAllListeners();
+      this._ws.close();
+      this._ws = null;
+    }
+    if (this._tickQueue.length > 0) {
+      this._bulk(this._tickQueue);
+    }
+    this._tickQueue = null;
+    clearInterval(this._bulkTM);
+    logger.info('will restart after 3 seconds');
+    setTimeout(run, 3000);
   }
 }
 
