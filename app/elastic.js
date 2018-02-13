@@ -10,12 +10,5 @@ const client =  new elasticsearch.Client({
   }
 });
 
-client.ping(err => {
-  if (err) {
-    logger.error(err);
-  } else {
-    logger.info('elasticsearch connected');
-  }
-});
 module.exports = client;
 

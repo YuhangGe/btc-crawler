@@ -21,11 +21,26 @@ const status = {
 };
 class BtcCrawler {
   constructor() {
-    this._initialize();
     this._bootTime = Date.now() / 1000;
     this._tickQueue = [];
-    this._bulkBusy = false;
+    this._bulkBusy = true;
     this._bulkTM = setInterval(this._onBulkInt.bind(this), config.elastic.bulkInterval);
+    this._checkES();
+  }
+  _checkES() {
+    elastcsearch.ping(err => {
+      if (err) {
+        logger.error('elasticsearch connect error, will try after 10 seconds');
+        logger.error(err);
+        setTimeout(() => {
+          this._checkES();
+        }, 10000);
+      } else {
+        logger.info('elasticsearch connected');
+        this._bulkBusy = false;
+        this._initialize();
+      }
+    });
   }
   _onBulkInt() {
     if (this._bulkBusy || this._tickQueue.length === 0) return;

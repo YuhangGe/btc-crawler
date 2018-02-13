@@ -1,6 +1,6 @@
 const pEnv = process.env;
 const logLevel = pEnv.LOG_LEVEL || (pEnv.NODE_ENV === 'production' ? 'info' : 'debug');
-const esHosts = pEnv.ES_HOSTS || (pEnv.NODE_ENV === 'production' ? '127.0.0.1:9200' : '172.16.150.29:9200');
+const esHosts = pEnv.ES_HOSTS || '172.16.150.29:9200';
 const bulkInterval = Number(pEnv.BULK_INTERVAL || (pEnv.NODE_ENV === 'production' ? 3 * 60 * 1000 : 5 * 1000));
 
 const config = {
