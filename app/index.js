@@ -8,10 +8,12 @@ const http = require('http');
 const TIME_FORMAT = 'YYYY/MM/DD HH:mm:ss';
 const status = {
   receiveTickCount: 0,
+  receiveTickCountPerSecond: null,
+  receiveLastTickTime: null,
+  recieveLastTickPrice: null,
   bulkSuccessTickCount: 0,
   bulkErrorTickCount: 0,
-  avgTickCountPerSecond: null,
-  lastTickUpdateTime: null,  
+  bulkLastTickTime: null,  
   sysBootTime: moment().format(TIME_FORMAT),
   sysErrorCount: 0,
   sysLastErrorTime: null,
@@ -32,9 +34,13 @@ class BtcCrawler {
     this._bulk(ticks);
   }
   _pushTick(tick) {
-    // logger.debug('recieve tick', moment(tick.timestamp).format('YYYY/MM/DD HH:mm:ss.SSS'), tick.price);
     this._tickQueue.push(tick);
-    status.receiveTickCount++;
+    const tm = moment(tick.timestamp).format('YYYY/MM/DD HH:mm:ss.SSS');
+    status.receiveLastTickTime = tm;
+    status.recieveLastTickPrice = tick.price;
+    status.receiveTickCount++;    
+    status.receiveTickCountPerSecond = status.receiveTickCount / (tick.timestamp / 1000 - this._bootTime);
+    logger.debug('recieve tick', tm, tick.price);
   }
   _bulk(ticks) {
     const body = [];
@@ -48,7 +54,6 @@ class BtcCrawler {
       body.push(tick);
     });
     this._bulkBusy = true;
-    logger.debug('write ticks', ticks.length);
     elastcsearch.bulk({
       body 
     }, (err) => {
@@ -57,9 +62,9 @@ class BtcCrawler {
         status.bulkErrorTickCount += ticks.length;
         this._onSysErr(err);
       } else {
-        status.successTickCount += ticks.length;
-        status.avgTickCountPerSecond = status.successTickCount / (Date.now() / 1000 - this._bootTime);
-        status.lastTickUpdateTime = moment(ticks[ticks.length - 1].timestamp).format('YYYY/MM/DD HH:mm:ss.SSS');
+        status.bulkSuccessTickCount += ticks.length;
+        status.bulkLastTickTime = moment(ticks[ticks.length - 1].timestamp).format('YYYY/MM/DD HH:mm:ss.SSS');
+        logger.debug('write ticks', ticks.length);
       }
     });
   }
