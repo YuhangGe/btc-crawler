@@ -1,0 +1,32 @@
+{
+  "name": "btc-crawler",
+  "version": "1.0.0",
+  "description": "btc crawler",
+  "main": "app/index.js",
+  "scripts": {
+    "debug": "node ./app/index.js",
+    "dev": "pm2 kill && pm2 start ecosystem.config.js --only btc-crawler-dev --no-daemon",
+    "start": "pm2 start ecosystem.config.js --only btc-crawler",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix ./app"
+  },
+  "author": "Yuhang Ge",
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "elasticsearch": "^14.1.0",
+    "lodash": "^4.17.5",
+    "moment": "^2.20.1",
+    "pako": "^1.0.6",
+    "pm2": "^2.9.3",
+    "pm2-logrotate": "^2.4.0",
+    "ws": "^4.0.0"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "devDependencies": {
+    "eslint": "^4.17.0",
+    "precommit-hook": "^3.0.0"
+  }
+}

@@ -1,0 +1,9 @@
+/.tmp
+/.vscode
+/.idea
+/node_modules
+/dist
+
+HALParser.js
+HALLexer.js
+HALListener.js
