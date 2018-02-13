@@ -5,7 +5,7 @@ const bulkInterval = Number(pEnv.BULK_INTERVAL || (pEnv.NODE_ENV === 'production
 
 const config = {
   server: {
-    host: '127.0.0.1',
+    host: '0.0.0.0',
     port: 8066
   },
   logger: {
