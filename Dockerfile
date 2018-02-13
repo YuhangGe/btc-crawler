@@ -5,7 +5,8 @@ COPY ./app /opt/btc-crawler/app
 
 WORKDIR /opt/btc-crawler
 ENV TZ=Asia/Shanghai
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN apk add --no-cache tzdata
+RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime
 RUN npm install
 EXPOSE 8066
 CMD ["node", "app/index.js"]
