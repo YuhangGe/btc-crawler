@@ -60,7 +60,7 @@ class BtcCrawler {
     this._bulk(ticks);
   }
   _pushTick(tick) {
-    // receiveLastTickTimestamp = tick.timestamp;
+    receiveLastTickTimestamp = tick.timestamp;
     this._tickQueue.push(tick);
     const tm = moment(tick.timestamp).tz('Asia/Shanghai').format(TIME_FORMAT);
     status.receiveLastTickTime = tm;
