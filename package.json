@@ -18,6 +18,7 @@
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
+    "nodemailer": "^4.6.0",
     "pako": "^1.0.6",
     "pm2": "^2.9.3",
     "pm2-logrotate": "^2.4.0",

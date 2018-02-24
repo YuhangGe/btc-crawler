@@ -6,6 +6,7 @@ const moment = require('moment-timezone');
 const elastcsearch = require('./elastic');
 const http = require('http');
 const TIME_FORMAT = 'YYYY/MM/DD HH:mm:ss.SSS';
+const backup = require('./backup');
 const symbolStatusMap = (function () {
   const map = {
     ____bootTime: moment().tz('Asia/Shanghai').format(TIME_FORMAT),
@@ -13,7 +14,8 @@ const symbolStatusMap = (function () {
       errorCount: 0,
       errorLastTime: null,
       errorLastMessage: null
-    }
+    },
+    __backupService: backup.status
   };
   config.api.symbols.forEach(sym => {
     map[sym] = {
