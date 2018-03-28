@@ -9,7 +9,7 @@
     "start": "pm2 start ecosystem.config.js --only btc-crawler",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --fix ./app",
-    "ss": "sslocal -s $SS_SERVER_HOST -p $SS_SERVER_PORT -l $SS_LOCAL_PORT -b $SS_LOCAL_ADDR -k $SS_PASSWORD -m $SS_METHOD -t $SS_TIMEOUT -vv",
+    "ss": "sslocal -s $SS_SERVER_HOST -p $SS_SERVER_PORT -l $SS_LOCAL_PORT -b $SS_LOCAL_ADDR -k $SS_PASSWORD -m $SS_METHOD -t $SS_TIMEOUT",
     "docker": "concurrently --raw \"npm run ss\" \"NODE_ENV=production npm run debug\""
   },
   "author": "Yuhang Ge",
