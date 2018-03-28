@@ -26,4 +26,4 @@ COPY ./run.sh /opt/btc-crawler/run.sh
 WORKDIR /opt/btc-crawler
 RUN npm install
 EXPOSE 8066
-CMD run.sh
+CMD sh /opt/btc-crawler/run.sh
