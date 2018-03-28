@@ -16,7 +16,7 @@ ENV SS_PASSWORD default
 ENV SS_METHOD rc4-md5
 ENV SS_TIMEOUT 300
 
-EXPOSE $LOCAL_PORT
+EXPOSE $SS_LOCAL_PORT
 
 
 COPY package.json /opt/btc-crawler/package.json
