@@ -21,9 +21,8 @@ EXPOSE $SS_LOCAL_PORT
 
 COPY package.json /opt/btc-crawler/package.json
 COPY ./app /opt/btc-crawler/app
-COPY ./run.sh /opt/btc-crawler/run.sh
 
 WORKDIR /opt/btc-crawler
 RUN npm install --production
 EXPOSE 8066
-CMD sh /opt/btc-crawler/run.sh
+CMD npm run docker
