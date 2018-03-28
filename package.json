@@ -22,6 +22,7 @@
     "pako": "^1.0.6",
     "pm2": "^2.9.3",
     "pm2-logrotate": "^2.4.0",
+    "socks-proxy-agent": "^3.0.1",
     "ws": "^4.0.0"
   },
   "pre-commit": [

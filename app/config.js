@@ -14,6 +14,7 @@ const symbols = (
 const config = {
   server: {
     host: '0.0.0.0',
+    proxy: pEnv['SS_PROXY'] || 'socks://127.0.0.1:1080',
     port: 8066
   },
   logger: {

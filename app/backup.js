@@ -119,7 +119,7 @@ function _onErr(err) {
   logger.error('Backup service error');
   logger.error(err);
 }
-setInterval(() => {
+process.env.BACKUP_ENABLE !== 'false' && setInterval(() => {
   if (busy) {
     logger.info('Backup service skip interval as busy');
     return;
@@ -127,6 +127,6 @@ setInterval(() => {
   run();
 }, config.api.backupInterval);
 
-run(process.env.BACKUP_DAY || null);
+process.env.BACKUP_ENABLE !== 'false' && run(process.env.BACKUP_DAY || null);
 
 module.exports = backup;

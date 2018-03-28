@@ -5,8 +5,10 @@ const pako = require('pako');
 const moment = require('moment-timezone');
 const elastcsearch = require('./elastic');
 const http = require('http');
+const SocksProxyAgent = require('socks-proxy-agent');
 const TIME_FORMAT = 'YYYY/MM/DD HH:mm:ss.SSS';
 const backup = require('./backup');
+const agent = new SocksProxyAgent(config.server.proxy, true);
 const symbolStatusMap = (function () {
   const map = {
     ____bootTime: moment().tz('Asia/Shanghai').format(TIME_FORMAT),
@@ -115,7 +117,9 @@ class Crawler {
   }
   _initialize() {
     if (this._destried) return;
-    const ws = new WebSocket(`wss://${config.api.host}/ws`);
+    const ws = new WebSocket(`wss://${config.api.host}/ws`, {
+      agent
+    });
     ws.on('open', () => {
       if (this._destried) return;
       logger.info(this._symbol, 'crawler', this._id, 'websocket connected');
